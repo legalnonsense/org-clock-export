@@ -28,6 +28,29 @@ Or, use this use-package declaration with all custom variables set to the defaul
                                    "description" (org-entry-get (point) "ITEM")
                                    "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
 #+end_src
+
+*** Usage
+=org-clock-export-data= does all the heavy lifting. It is in the style of a plist. The rules are:
+
+1. The first element is a string to describe the category of data;
+2. The following sexp is evaluated at each org heading containing a clock line
+3. Any sexp use the following variables, which are bound based values from each clock-line:
+- start-year
+- start-month
+- start-day
+- start-dow
+- start-hour
+- start-minute
+- end-year
+- end-month
+- end-day
+- end-dow
+- end-hour
+- end-minute
+- total-hours
+- total-minutes
+  4. 
+     
 *** Example
 Consider the following file:
 #+begin_src org :results silent
@@ -56,10 +79,6 @@ date,hours,minutes,description,hourly rate
 03/01/2021,0,13,Doing the co-coworker’s work for them,325
 02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
-
-
-*** Usage
-=org-clock-export-data= does all the heavy lifting. The value must be a list where the first element is a string which will be used as a header 
 * Other efforts
 - org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed. 
 * Changelog

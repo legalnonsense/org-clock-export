@@ -87,7 +87,7 @@
   :type 'file)
 
 (defcustom org-clock-export-delimiter ","
-  "Delimiter used in the CSV output file. Default: \",\""
+  "Delimiter used in the CSV output. Default: \",\""
   :type 'string)
 
 (defcustom org-clock-export-org-ql-query nil

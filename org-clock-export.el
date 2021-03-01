@@ -82,7 +82,7 @@
   "Buffer used to export CSV data."
   :type 'string)
 
-(defcustom org-clock-export-export-file-name "~/.emacs.d/lisp/org-clock-export/export.csv"
+(defcustom org-clock-export-export-file-name (concat user-emacs-directory "clock-export.csv")
   "File to export data to."
   :type 'file)
 
@@ -107,11 +107,11 @@ or list of files.  Default: nil."
   :type '(choice file list string))
 
 (defcustom org-clock-export-data
-  '( :date (concat start-month "/" start-day "/" start-year)
-     :hours total-hours
-     :minutes total-minutes
-     :description (org-entry-get (point) "ITEM")
-     :hourly-rate (or (org-entry-get (point) "HOURLY-RATE") "325"))
+  '( "date" (concat start-month "/" start-day "/" start-year)
+     "hours" total-hours
+     "minutes" total-minutes
+     "description" (org-entry-get (point) "ITEM")
+     "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))
   "The following variables are let-bound when the functions are called, 
 based on the values in the clock line:
 start-year
@@ -249,8 +249,8 @@ With two prefixes, prompt for file."
     (cl-loop for
 	     x from 0 to (1- (length org-clock-export-data)) by 2
 	     do
-	     (insert (substring (symbol-name (nth x org-clock-export-data)) 1)
-		     org-clock-export-delimiter)
+	     (insert  (nth x org-clock-export-data)
+		      org-clock-export-delimiter)
 	     finally
 	     (progn (delete-char -1)
 		    (insert "\n")))

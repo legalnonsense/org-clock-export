@@ -49,12 +49,13 @@ Consider the following file:
   :END:
 #+end_src
 =org-clock-export-export= will produce the following:
-
+#+begin_example
 date,hours,minutes,description,hourly rate
 03/01/2021,0,05,Checking if co-coworker did any work,325
 03/01/2021,0,12,Sending an email to a non-responsive co-worker,325
 03/01/2021,0,13,Doing the co-coworker’s work for them,325
 02/28/2021,1,00,Talking about mindless drivel with customer,325
+#+end_example
 
 
 *** Usage

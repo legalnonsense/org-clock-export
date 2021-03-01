@@ -1,6 +1,8 @@
 
 * org-clock-export.el
 Fully customizable export of org-clock data into a CSV file. 
+** WARNING
+This package is being tested and developed. Please open issues for any feedback, requests, or ideas. 
 ** Usage
 *** Install the dependencies:
 - org-ql :: https://github.com/alphapapa/org-ql
@@ -63,8 +65,8 @@ The rules are:
 
 1. The first element is a string to describe the category of data;
 2. The following sexp is evaluated at each org heading containing a clock line
-3. Any sexp use the following variables, which are bound based values from each clock-line: start-year, start-month, start-day, start-dow, start-hour, start-minute, end-year, end-month, end-day, end-dow, end-hour, end-minute, total-hours, total-minutes
-4. In addition to using those variables, the sexp be any other code that will be run at each heading containing a clock line
+3. Any sexp can use the following variables, which are bound based values from each clock-line: start-year, start-month, start-day, start-dow, start-hour, start-minute, end-year, end-month, end-day, end-dow, end-hour, end-minute, total-hours, total-minutes
+4. The sexp be any other code that will be run at each heading containing a clock line. You can use =org-entry-get= or any other function to grab data from the heading and put it into the CSV. 
 5. The only rules for these sexps is that they must return a string, and that they must not move the point (i.e., you should save any excursion).
 6. The order of the data reflects the order it will be exported into the CSV
      
@@ -107,6 +109,7 @@ Consider the following file org file:
 A few notes:
 1. Note that for the line ="hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")=, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
 2. If a heading has more than one clock line (here, ="Checking if co-coworker did any work"=), then the CSV file will contain an entry for /each/ clock line.
+
 *** Restricting exported data
 What if you only want to export clock data for certain headings, or for a certain time? Then you use the variable =org-clock-export-org-ql-query=. This will require you to understand how to use =org-ql=. The variable must be a query acceptable to =org-ql-select=. For example, suppose you only wanted to export time entries from headings tagged with =:Abby:=. Then:
 #+begin_src emacs-lisp :results silent
@@ -117,17 +120,15 @@ And now the output is:
 date,hours,minutes,description,hourly rate
 02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
-You can use =org-clock-export-org-ql-query= to restrict to certain tags, dates, times, etc., and otherwise harness the full power of =org-ql=. 
+You can use =org-clock-export-org-ql-query= to restrict to certain tags, dates, times, and otherwise harness the full power of =org-ql=. 
 *** Other custom variables
-| Name                              | Description                                                                  | Default value                                                                                                                                                                                                    |
-|-----------------------------------+------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| org-clock-export-buffer           | Buffer used to export CSV data.                                              | *ORG-CLOCK-EXPORT CSV"=                                                                                                                                                                                          |
-| org-clock-export-export-file-name | File to export data to.                                                      | (concat user-emacs-directory "clock-export.csv")                                                                                                                                                                 |
-| org-clock-export-delimiter        | Delimiter used in the CSV output.                                            | ","                                                                                                                                                                                                              |
-| org-clock-export-org-ql-query     | See above.                                                                   | nil                                                                                                                                                                                                              |
-| org-clock-export-files            | "If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                                                                                                                                                                                              |
-| org-clock-export-data             | See above                                                                    | ( "date" (concat start-month "/" start-day "/" start-year "hours" total-hours "minutes" total-minutes "description" (org-entry-get (point) "ITEM") "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")) |
-|                                   |                                                                              |                                                                                                                                                                                                                  |
-
+| Name                              | Description                                                                  | Default value                                    |
+|-----------------------------------+------------------------------------------------------------------------------+--------------------------------------------------|
+| org-clock-export-buffer           | Buffer used to export CSV data.                                              | *ORG-CLOCK-EXPORT CSV"=                          |
+| org-clock-export-export-file-name | File to export data to.                                                      | (concat user-emacs-directory "clock-export.csv") |
+| org-clock-export-delimiter        | Delimiter used in the CSV output.                                            | ","                                              |
+| org-clock-export-org-ql-query     | See above.                                                                   | nil                                              |
+| org-clock-export-files            | "If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
+| org-clock-export-data             | See above                                                                    |                                                  |
 * Other efforts
 - org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed and so I wrote this. 

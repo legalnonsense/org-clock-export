@@ -1,0 +1,20 @@
+
+
+
+* Checking if co-coworker did any work :Gus:
+:LOGBOOK:
+CLOCK: [2021-03-01 Mon 15:45]--[2021-03-01 Mon 15:50] =>  0:05
+:END:
+* Sending an email to a non-responsive co-worker :email:Gus:
+:LOGBOOK:
+CLOCK: [2021-03-01 Mon 16:05]--[2021-03-01 Mon 16:17] =>  0:12
+:END:
+* Doing the co-coworker’s work for them :Gus:
+:LOGBOOK:
+CLOCK: [2021-03-01 Mon 16:17]--[2021-03-01 Mon 16:30] =>  0:13
+:END:
+* Talking about mindless drivel with customer :Abby:
+:LOGBOOK:
+CLOCK: [2021-02-28 Sun 16:19]--[2021-02-28 Sun 17:19] =>  1:00
+:END:
+

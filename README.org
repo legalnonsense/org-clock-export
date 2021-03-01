@@ -29,36 +29,60 @@ Or, use this use-package declaration with all custom variables set to the defaul
                                    "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
 #+end_src
 
-*** Usage
-=org-clock-export-data= does all the heavy lifting. It is in the style of a plist. The rules are:
+*** Quick start
+To run with the test file, first:
+#+begin_src emacs-lisp :results silent
+  (setq org-clock "~/.emacs.d/lisp/org-clock-export/test.org")
+  ;; Make sure to use the proper path to the test file on your machine
+#+end_src
+Then: =M-x= =org-clock-export-export=.
+And the output will be placed in a buffer called =*ORG-CLOCK-EXPORT CSV*=
+If it worked, you'll have the following in that buffer:
+#+begin_example
+  date,hours,minutes,description,hourly rate
+  03/01/2021,0,10,Checking if co-coworker did any work,250
+  03/01/2021,0,05,Checking if co-coworker did any work,250
+  03/01/2021,0,12,Sending an email to a non-responsive co-worker,125
+  03/01/2021,0,13,Doing the co-coworker’s work for them,325
+  02/28/2021,1,00,Talking about mindless drivel with customer,325
+#+end_example
+If you call =org-clock-export-export= with a prefix (i.e., press =C-u= before calling the command), the csv file will be saved to the location specified by =org-clock-export-file-name=.
+
+If you call it with two prefixes, you will be prompted to select the export file.
+*** Detailed usage 
+=org-clock-export-data= does the heavy lifting. It is in the style of a plist:
+#+begin_src emacs-lisp :results silent
+  (setq org-clock-export-data '( "date" (concat start-month "/" start-day "/" start-year)
+                                 "hours" total-hours
+                                 "minutes" total-minutes
+                                 "description" (org-entry-get (point) "ITEM")
+                                 "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")))
+#+end_src
+
+The rules are:
 
 1. The first element is a string to describe the category of data;
 2. The following sexp is evaluated at each org heading containing a clock line
-3. Any sexp use the following variables, which are bound based values from each clock-line:
-- start-year
-- start-month
-- start-day
-- start-dow
-- start-hour
-- start-minute
-- end-year
-- end-month
-- end-day
-- end-dow
-- end-hour
-- end-minute
-- total-hours
-- total-minutes
-  4. 
+3. Any sexp use the following variables, which are bound based values from each clock-line: start-year, start-month, start-day, start-dow, start-hour, start-minute, end-year, end-month, end-day, end-dow, end-hour, end-minute, total-hours, total-minutes
+4. In addition to using those variables, the sexp be any other code that will be run at each heading containing a clock line
+5. The only rules for these sexps is that they must return a string, and that they must not move the point (i.e., you should save any excursion).
+6. The order of the data reflects the order it will be exported into the CSV
      
 *** Example
-Consider the following file:
+Consider the following file org file:
 #+begin_src org :results silent
   ,* Checking if co-coworker did any work :Gus:
+  :PROPERTIES:
+  :HOURLY-RATE: 250
+  :END:
   :LOGBOOK:
+  CLOCK: [2021-03-01 Mon 16:40]--[2021-03-01 Mon 16:50] =>  0:10
   CLOCK: [2021-03-01 Mon 15:45]--[2021-03-01 Mon 15:50] =>  0:05
   :END:
   ,* Sending an email to a non-responsive co-worker :email:Gus:
+  :PROPERTIES:
+  :HOURLY-RATE: 125
+  :END:
   :LOGBOOK:
   CLOCK: [2021-03-01 Mon 16:05]--[2021-03-01 Mon 16:17] =>  0:12
   :END:
@@ -73,14 +97,37 @@ Consider the following file:
 #+end_src
 =org-clock-export-export= will produce the following:
 #+begin_example
+  date,hours,minutes,description,hourly rate
+  03/01/2021,0,10,Checking if co-coworker did any work,250
+  03/01/2021,0,05,Checking if co-coworker did any work,250
+  03/01/2021,0,12,Sending an email to a non-responsive co-worker,125
+  03/01/2021,0,13,Doing the co-coworker’s work for them,325
+  02/28/2021,1,00,Talking about mindless drivel with customer,325
+#+end_example
+A few notes:
+1. Note that for the line ="hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")=, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
+2. If a heading has more than one clock line (here, ="Checking if co-coworker did any work"=), then the CSV file will contain an entry for /each/ clock line.
+*** Restricting exported data
+What if you only want to export clock data for certain headings, or for a certain time? Then you use the variable =org-clock-export-org-ql-query=. This will require you to understand how to use =org-ql=. The variable must be a query acceptable to =org-ql-select=. For example, suppose you only wanted to export time entries from headings tagged with =:Abby:=. Then:
+#+begin_src emacs-lisp :results silent
+(setq org-clock-export-org-ql-query '(tags "Abby"))
+#+end_src
+And now the output is:
+#+begin_example
 date,hours,minutes,description,hourly rate
-03/01/2021,0,05,Checking if co-coworker did any work,325
-03/01/2021,0,12,Sending an email to a non-responsive co-worker,325
-03/01/2021,0,13,Doing the co-coworker’s work for them,325
 02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
+You can use =org-clock-export-org-ql-query= to restrict to certain tags, dates, times, etc., and otherwise harness the full power of =org-ql=. 
+*** Other custom variables
+| Name                              | Description                                                                  | Default value                                                                                                                                                                                                    |
+|-----------------------------------+------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| org-clock-export-buffer           | Buffer used to export CSV data.                                              | ="*ORG-CLOCK-EXPORT CSV*"=                                                                                                                                                                                           |
+| org-clock-export-export-file-name | File to export data to.                                                      | (concat user-emacs-directory "clock-export.csv")                                                                                                                                                                 |
+| org-clock-export-delimiter        | Delimiter used in the CSV output.                                            | ","                                                                                                                                                                                                              |
+| org-clock-export-org-ql-query     | See above.                                                                   | nil                                                                                                                                                                                                              |
+| org-clock-export-files            | "If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                                                                                                                                                                                              |
+| org-clock-export-data             | See above                                                                    | =( "date" (concat start-month "/" start-day "/" start-year "hours" total-hours "minutes" total-minutes "description" (org-entry-get (point) "ITEM") "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))= |
+|                                   |                                                                              |                                                                                                                                                                                                                  |
+
 * Other efforts
-- org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed. 
-* Changelog
-- [2020-12-03 Thu] Add support for repeating timestamps
-- [2020-12-04 Fri] Add support for excluding TODO states in =org-timed-alerts-todo-exclusions=
+- org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed and so I wrote this. 

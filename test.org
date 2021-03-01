@@ -2,10 +2,17 @@
 
 
 * Checking if co-coworker did any work :Gus:
+:PROPERTIES:
+:HOURLY-RATE: 250
+:END:
 :LOGBOOK:
+CLOCK: [2021-03-01 Mon 16:40]--[2021-03-01 Mon 16:50] =>  0:10
 CLOCK: [2021-03-01 Mon 15:45]--[2021-03-01 Mon 15:50] =>  0:05
 :END:
 * Sending an email to a non-responsive co-worker :email:Gus:
+:PROPERTIES:
+:HOURLY-RATE: 125
+:END:
 :LOGBOOK:
 CLOCK: [2021-03-01 Mon 16:05]--[2021-03-01 Mon 16:17] =>  0:12
 :END:

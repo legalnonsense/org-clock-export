@@ -109,12 +109,14 @@ need to include '(clocked), however you can add additional limitations, e.g.,
 or list of files.  Default: nil."
   :type '(choice file list string))
 
-(defcustom org-clock-export-data '( :date (concat start-month "/" start-day "/" start-year)
-				    :hours total-hours
-				    :minutes total-minutes
-				    :description (org-entry-get (point) "ITEM")
-				    :hourly-rate (or (org-entry-get (point) "HOURLY-RATE") "325"))
-  "The following variables are let-bound when the functions are called, based on the values in the clock line:
+(defcustom org-clock-export-data
+  '( :date (concat start-month "/" start-day "/" start-year)
+     :hours total-hours
+     :minutes total-minutes
+     :description (org-entry-get (point) "ITEM")
+     :hourly-rate (or (org-entry-get (point) "HOURLY-RATE") "325"))
+  "The following variables are let-bound when the functions are called, 
+based on the values in the clock line:
 start-year
 start-month
 start-day
@@ -130,10 +132,11 @@ end-minute
 total-hours
 total-minutes.
 
-Any other sexp is evaluated at the first point of each heading with a clock line.  Hence, you can use
-`org-entry-get' to retrieve property values, or any other method to gather data from the heading.
-The only rules are that it must return a string, and it must keep the point at the heading when finsihed
-(i.e., you should `save-excursion' if you move the point when looking for data.
+Any other sexp is evaluated at the first point of each heading with a clock line.  
+Hence, you can use `org-entry-get' to retrieve property values, or any other 
+method to gather data from the heading.  The only rules are that it must return a 
+string, and it must keep the point at the heading when finsihed (i.e., you should
+ `save-excursion' if you move the point when looking for data.
 
 If there are multiple clock lines in a heading, this returns a line of CSV data for each one."
   :type '(repeat (list symbol sexp)))

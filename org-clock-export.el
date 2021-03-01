@@ -82,7 +82,7 @@
   "Buffer used to export CSV data."
   :type 'string)
 
-(defcustom org-clock-export-file-name "~/.emacs.d/lisp/org-clock-export/export.csv"
+(defcustom org-clock-export-export-file-name "~/.emacs.d/lisp/org-clock-export/export.csv"
   "File to export data to."
   :type 'file)
 
@@ -262,7 +262,7 @@ With two prefixes, prompt for file."
 		      (progn (delete-char -1)
 			     (insert "\n"))))
     (pcase prefix
-      (`4 (write-region (point-min) (point-max) org-clock-export-file-name))
+      (`4 (write-region (point-min) (point-max) org-clock-export-export-file-name))
       (`16 (write-region (point-min) (point-max) (read-file-name
 						  "File name to export CSV data:"))))))
 

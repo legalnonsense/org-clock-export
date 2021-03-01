@@ -34,7 +34,7 @@ Or, use this use-package declaration with all custom variables set to the defaul
 *** Quick start
 To run with the test file, first:
 #+begin_src emacs-lisp :results silent
-  (setq org-clock "~/.emacs.d/lisp/org-clock-export/test.org")
+  (setq org-clock-export-files "~/.emacs.d/lisp/org-clock-export/test.org")
   ;; Make sure to use the proper path to the test file on your machine
 #+end_src
 Then: =M-x= =org-clock-export-export=.

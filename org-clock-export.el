@@ -202,25 +202,28 @@ If there are multiple clock lines in a heading, this returns a line of CSV data 
 				   (end-of-line)
 				   (re-search-forward org-heading-regexp nil t))
 				 (point-max))))
-       (cl-loop while (re-search-forward org-clock-export-clock-re (get-limit) 'no-error)
-		collect (list ,@(cl-loop for x from 1 to (1- (length (symbol-value arg))) by 2
-					 collect
-					 `(cl-flet ((get-match (num) (org-no-properties (match-string num))))
-					    (let ((start-year (get-match 1))
-						  (start-month (get-match 2))
-						  (start-day (get-match 3))
-						  (start-dow (get-match 4))
-						  (start-hour (get-match 5))
-						  (start-minute (get-match 6))
-						  (end-year (get-match 7))
-						  (end-month (get-match 8))
-						  (end-day (get-match 9))
-						  (end-dow (get-match 10))
-						  (end-hour (get-match 11))
-						  (end-minute (get-match 12))
-						  (total-hours (get-match 13))
-						  (total-minutes (get-match 14)))
-					      ,(nth x (symbol-value arg))))))))))
+       (cl-loop while
+		(re-search-forward org-clock-export-clock-re (get-limit) 'no-error)
+		collect
+		(list ,@(cl-loop for
+				 x from 1 to (1- (length (symbol-value arg))) by 2
+				 collect
+				 `(cl-flet ((get-match (num) (org-no-properties (match-string num))))
+				    (let ((start-year (get-match 1))
+					  (start-month (get-match 2))
+					  (start-day (get-match 3))
+					  (start-dow (get-match 4))
+					  (start-hour (get-match 5))
+					  (start-minute (get-match 6))
+					  (end-year (get-match 7))
+					  (end-month (get-match 8))
+					  (end-day (get-match 9))
+					  (end-dow (get-match 10))
+					  (end-hour (get-match 11))
+					  (end-minute (get-match 12))
+					  (total-hours (get-match 13))
+					  (total-minutes (get-match 14)))
+				      ,(nth x (symbol-value arg))))))))))
 
 (defun org-clock-export--run-org-ql ()
   "Run org-ql to process all headings in `org-clock-export-files' and
@@ -228,8 +231,8 @@ return a list with an element for each clock line."
   (cl-loop for each in
 	   (org-ql-select (or org-clock-export-files
 			      (org-agenda-files))
-	     (and '(clocked)
-		  org-clock-export-org-ql-query)
+	     `(and (clocked)
+		   ,org-clock-export-org-ql-query)
 	     :action '(org-clock-export--parse-clock-lines-in-heading
 		       org-clock-export-data))
 	   append each))

@@ -92,7 +92,6 @@
 (defcustom org-clock-export-delimiter ","
   "Delimiter used in the CSV output file. Default: \",\""
   :type 'string)
-(setq org-clock-export-delimiter "|")
 
 (defcustom org-clock-export-org-ql-query nil
   "Additional query used by `org-ql-select' to determine which headings to 
@@ -110,14 +109,11 @@ need to include '(clocked), however you can add additional limitations, e.g.,
 or list of files.  Default: nil."
   :type '(choice file list string))
 
-(setq org-clock-export-files "~/.emacs.d/lisp/org-clock-export/test.org")
-(setq org-clock-export-files nil)
-
 (defcustom org-clock-export-data '( :date (concat start-month "/" start-day "/" start-year)
-				   :hours total-hours
-				   :minutes total-minutes
-				   :description (org-entry-get (point) "ITEM")
-				   :hourly-rate (or (org-entry-get (point) "HOURLY-RATE" "325")))
+				    :hours total-hours
+				    :minutes total-minutes
+				    :description (org-entry-get (point) "ITEM")
+				    :hourly-rate (or (org-entry-get (point) "HOURLY-RATE") "325"))
   "The following variables are let-bound when the functions are called, based on the values in the clock line:
 start-year
 start-month
@@ -142,68 +138,58 @@ The only rules are that it must return a string, and it must keep the point at t
 If there are multiple clock lines in a heading, this returns a line of CSV data for each one."
   :type '(repeat (list symbol sexp)))
 
-(setq org-clock-export-data '(
-			     :name "Filipovits"
-			     :date (concat start-month "/" start-day "/" start-year)
-			     :hours total-hours
-			     :minutes total-minutes
-			     :description (org-entry-get (point) "ITEM")
-			     :hourly-rate (or (org-entry-get (point) "HOURLY-RATE" "55"))
-			     :customer (save-excursion (while (org-up-heading-safe))
-						       (org-entry-get (point) "ITEM"))))
-
 ;;;; Constants
 
 (defconst org-clock-export-clock-re (rx (seq bol
-					    (zero-or-more (any "	 "))
-					    "CLOCK: ")
-				       (seq "["
-					    ;; start-year
-					    (group-n 1 (= 4 digit))
-					    "-"
-					    ;; start month
-					    (group-n 2 (= 2 digit))
-					    "-"
-					    ;; start day
-					    (group-n 3 (= 2 digit))
-					    (one-or-more not-newline)
-					    ;; start DOW
-					    (group-n 4 (= 3 alpha))
-					    (one-or-more not-newline)
-					    ;; start hour
-					    (group-n 5 (= 2 digit))
-					    ":"
-					    ;; start minute
-					    (group-n 6 (= 2 digit))
-					    "]")
-				       (seq "--")
-				       (seq "["
-					    ;; end-year
-					    (group-n 7 (= 4 digit))
-					    "-"
-					    ;; end month
-					    (group-n 8 (= 2 digit))
-					    "-"
-					    ;; end day
-					    (group-n 9 (= 2 digit))
-					    (one-or-more not-newline)
-					    ;; end DOW
-					    (group-n 10 (= 3 alpha))
-					    (one-or-more not-newline)
-					    ;; end hour
-					    (group-n 11 (= 2 digit))
-					    ":"
-					    ;; end minute
-					    (group-n 12 (= 2 digit))
-					    "]")
-				       (seq (one-or-more space)
-					    "=>"
-					    (one-or-more space))
-				       ;; total hours
-				       (seq (group-n 13 (one-or-more digit))
-					    ":"
-					    ;; total minutes
-					    (group-n 14 (one-or-more digit))))
+					     (zero-or-more (any "	 "))
+					     "CLOCK: ")
+					(seq "["
+					     ;; start-year
+					     (group-n 1 (= 4 digit))
+					     "-"
+					     ;; start month
+					     (group-n 2 (= 2 digit))
+					     "-"
+					     ;; start day
+					     (group-n 3 (= 2 digit))
+					     (one-or-more not-newline)
+					     ;; start DOW
+					     (group-n 4 (= 3 alpha))
+					     (one-or-more not-newline)
+					     ;; start hour
+					     (group-n 5 (= 2 digit))
+					     ":"
+					     ;; start minute
+					     (group-n 6 (= 2 digit))
+					     "]")
+					(seq "--")
+					(seq "["
+					     ;; end-year
+					     (group-n 7 (= 4 digit))
+					     "-"
+					     ;; end month
+					     (group-n 8 (= 2 digit))
+					     "-"
+					     ;; end day
+					     (group-n 9 (= 2 digit))
+					     (one-or-more not-newline)
+					     ;; end DOW
+					     (group-n 10 (= 3 alpha))
+					     (one-or-more not-newline)
+					     ;; end hour
+					     (group-n 11 (= 2 digit))
+					     ":"
+					     ;; end minute
+					     (group-n 12 (= 2 digit))
+					     "]")
+					(seq (one-or-more space)
+					     "=>"
+					     (one-or-more space))
+					;; total hours
+					(seq (group-n 13 (one-or-more digit))
+					     ":"
+					     ;; total minutes
+					     (group-n 14 (one-or-more digit))))
   "Clock line RE.  The groups are explained in the comments.")
 
 ;;;; Functions
@@ -276,11 +262,10 @@ With two prefixes, prompt for file."
 		      (progn (delete-char -1)
 			     (insert "\n"))))
     (pcase prefix
-      (`4 (progn (write-region (point-min) (point-max) org-clock-export-file-name)
-		 (kill-buffer org-clock-export-buffer)))
-      (`16 (progn (write-region (point-min) (point-max) (read-file-name
-							 "File name to export CSV data:"))
-		  (kill-buffer org-clock-export-buffer))))))
+      (`4 (write-region (point-min) (point-max) org-clock-export-file-name))
+      (`16 (write-region (point-min) (point-max) (read-file-name
+						  "File name to export CSV data:"))))))
+
 
 ;;;; Footer
 

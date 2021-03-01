@@ -1,0 +1,66 @@
+
+* org-clock-export.el
+Fully customizable export of org-clock data into a CSV file. 
+** Usage
+*** Install the dependencies:
+- org-ql :: https://github.com/alphapapa/org-ql
+*** Installation
+Clone this repository into your load path.
+#+begin_src emacs-lisp :results silent
+  git clone https://github.com/legalnonsense/org-clock-export.git
+#+end_src
+Then:
+#+begin_src emacs-lisp :results silent 
+(use-package 'org-clock-export)
+#+end_src
+Or, use this use-package declaration with all custom variables set to the default values:
+#+begin_src emacs-lisp :results silent
+  (use-package org-clock-export
+    :config
+    (setq org-clock-export-org-ql-query nil
+          org-clock-export-files nil
+          org-clock-export-file-name (concat user-emacs-directory "clock-export.csv")
+          org-clock-export-buffer "*ORG-CLOCK-EXPORT CSV*"
+          org-clock-export-delimiter ","
+          org-clock-export-data '( "date" (concat start-month "/" start-day "/" start-year)
+                                   "hours" total-hours
+                                   "minutes" total-minutes
+                                   "description" (org-entry-get (point) "ITEM")
+                                   "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
+#+end_src
+*** Example
+Consider the following file:
+#+begin_src org :results silent
+  ,* Checking if co-coworker did any work :Gus:
+  :LOGBOOK:
+  CLOCK: [2021-03-01 Mon 15:45]--[2021-03-01 Mon 15:50] =>  0:05
+  :END:
+  ,* Sending an email to a non-responsive co-worker :email:Gus:
+  :LOGBOOK:
+  CLOCK: [2021-03-01 Mon 16:05]--[2021-03-01 Mon 16:17] =>  0:12
+  :END:
+  ,* Doing the co-coworker’s work for them :Gus:
+  :LOGBOOK:
+  CLOCK: [2021-03-01 Mon 16:17]--[2021-03-01 Mon 16:30] =>  0:13
+  :END:
+  ,* Talking about mindless drivel with customer :Abby:
+  :LOGBOOK:
+  CLOCK: [2021-02-28 Sun 16:19]--[2021-02-28 Sun 17:19] =>  1:00
+  :END:
+#+end_src
+=org-clock-export-export= will produce the following:
+#+begin_src emacs-lisp :results silent
+date,hours,minutes,description,hourly rate
+03/01/2021,0,05,Checking if co-coworker did any work,325
+03/01/2021,0,12,Sending an email to a non-responsive co-worker,325
+03/01/2021,0,13,Doing the co-coworker’s work for them,325
+02/28/2021,1,00,Talking about mindless drivel with customer,325
+#+end_src
+
+*** Usage
+=org-clock-export-data= does all the heavy lifting. The value must be a list where the first element is a string which will be used as a header 
+* Other efforts
+- org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed. 
+* Changelog
+- [2020-12-03 Thu] Add support for repeating timestamps
+- [2020-12-04 Fri] Add support for excluding TODO states in =org-timed-alerts-todo-exclusions=

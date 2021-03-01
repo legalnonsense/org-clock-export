@@ -41,14 +41,10 @@
 
 ;;;; Usage
 
-;; Type M-x org-timed-alerts-mode RET to enable the package. 
-;; 
-;; To update all timers, open your org-agenda or type:
-;; M-x org-timed-alerts-set-all-timers RET
 
 ;;;; Tips
 
-;; You can customize settings in the `org-timed-alerts' group.
+
 
 ;;; License:
 
@@ -71,6 +67,7 @@
 
 (require 'org-ql)
 (require 'cl-lib)
+(require 'rx)
 
 ;;;; Customization
 

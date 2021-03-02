@@ -252,7 +252,7 @@ With two prefixes, prompt for file."
 	     (insert  (nth x org-clock-export-data)
 		      org-clock-export-delimiter)
 	     finally
-	     (progn (delete-char -1)
+	     (progn (delete-char (* -1 (length org-clock-export-delimiter)))
 		    (insert "\n")))
     (cl-loop for
 	     entry in (org-clock-export--run-org-ql)
@@ -262,7 +262,7 @@ With two prefixes, prompt for file."
 		      do
 		      (insert data org-clock-export-delimiter)
 		      finally
-		      (progn (delete-char -1)
+		      (progn (delete-char (* -1 (length org-clock-export-delimiter)))
 			     (insert "\n"))))
     (pcase prefix
       (`4 (write-region (point-min) (point-max) org-clock-export-export-file-name))

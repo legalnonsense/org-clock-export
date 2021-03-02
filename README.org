@@ -107,7 +107,7 @@ Consider the following file org file:
   02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
 A few notes:
-1. Note that for the line =hourly rate= =(or (org-entry-get (point) "HOURLY-RATE") "325")=, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
+1. Note that for the line ="hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")=, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
 2. If a heading has more than one clock line (here, ="Checking if co-coworker did any work"=), then the CSV file will contain an entry for /each/ clock line.
 
 *** Restricting exported data

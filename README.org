@@ -1,8 +1,8 @@
 
 * org-clock-export.el
 Fully customizable export of org-clock data into a CSV file. 
-** WARNING
-This package is being tested and developed. Please open issues for any feedback, requests, or ideas. 
+** IN PROGRESS
+This package is being developed. It appears to work. Please open issues for any feedback, requests, or ideas. 
 ** Usage
 *** Install dependencies:
 - org-ql :: https://github.com/alphapapa/org-ql

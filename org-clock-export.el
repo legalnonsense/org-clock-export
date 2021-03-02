@@ -239,7 +239,7 @@ return a list with an element for each clock line."
 
 ;;;; Commands
 
-(defun org-clock-export-export (&optional prefix)
+(defun org-clock-export (&optional prefix)
   "With no prefix, export to buffer.
 With one prefix, export to file.
 With two prefixes, prompt for file."

@@ -1,6 +1,3 @@
-
-
-
 * Checking if co-coworker did any work :Gus:
 :PROPERTIES:
 :HOURLY-RATE: 250

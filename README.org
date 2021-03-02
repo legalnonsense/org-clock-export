@@ -81,9 +81,9 @@ The rules are:
   - total-hours
   - total-minutes
 4. The sexp be any code that will be run at each heading containing a clock line. For example, you can use =org-entry-get= (or any other function) to grab data from the heading and put it into the CSV.
-5. 
+5. The sexp can be a string if you want one field to be constant and not depend on the heading or the clock data. 
 6. The only rules for these sexps are that they must return a string, and that they must not move the point (i.e., you should save any excursion).
-7. The order of the data reflects the order it will be exported into the CSV
+7. The order of the data in =org-clock-export-data= reflects the order it will appear in the CSV
      
 *** Example
 Consider the following file org file:

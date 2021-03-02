@@ -37,7 +37,7 @@ To run with the test file, first:
   (setq org-clock-export-files "~/.emacs.d/lisp/org-clock-export/test.org")
   ;; Make sure to use the proper path to the test file on your machine
 #+end_src
-Then: =M-x= =org-clock-export-export=.
+Then: =M-x= =org-clock-export=.
 And the output will be placed in a buffer called =*ORG-CLOCK-EXPORT CSV*=
 If it worked, you'll have the following in that buffer:
 #+begin_example
@@ -48,7 +48,7 @@ If it worked, you'll have the following in that buffer:
   03/01/2021,0,13,Doing the co-coworker’s work for them,325
   02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
-If you call =org-clock-export-export= with a prefix (i.e., press =C-u= before calling the command), the csv file will be saved to the location specified by =org-clock-export-file-name=.
+If you call =org-clock-export= with a prefix (i.e., press =C-u= before calling the command), the csv file will be saved to the location specified by =org-clock-export-file-name=.
 
 If you call it with two prefixes, you will be prompted to select the export file.
 *** Detailed usage 
@@ -112,7 +112,7 @@ Consider the following file org file:
   CLOCK: [2021-02-28 Sun 16:19]--[2021-02-28 Sun 17:19] =>  1:00
   :END:
 #+end_src
-=org-clock-export-export= will produce the following:
+=org-clock-export= will produce the following:
 #+begin_example
   date,hours,minutes,description,hourly rate
   03/01/2021,0,10,Checking if co-coworker did any work,250
@@ -174,7 +174,7 @@ Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with cus
 | Name                              | Description                                                                  | Default value                                    |
 |-----------------------------------+------------------------------------------------------------------------------+--------------------------------------------------|
 | org-clock-export-buffer           | Buffer used to export CSV data                                               | =*ORG-CLOCK-EXPORT CSV*=                        |
-| org-clock-export-export-file-name | File to export data to                                                       | =(concat user-emacs-directory "clock-export.csv")= |
+| org-clock-export-file-name | File to export data to                                                       | =(concat user-emacs-directory "clock-export.csv")= |
 | org-clock-export-delimiter        | Delimiter (a string) used in the CSV output                                  | ","                                              |
 | org-clock-export-org-ql-query     | See above                                                                    | nil                                              |
 | org-clock-export-files            | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files  | nil                                              |

@@ -65,7 +65,17 @@ The rules are:
 
 1. The first element is a string to describe the category of data;
 2. The following sexp is evaluated at each org heading containing a clock line
-3. Any sexp can use the following variables, which are bound based values from each clock-line: start-year, start-month, start-day, start-dow, start-hour, start-minute, end-year, end-month, end-day, end-dow, end-hour, end-minute, total-hours, total-minutes
+3. Any sexp can use the following variables, which are bound based values from each clock-line:
+   1. start-year
+   2. start-month
+   3. start-day
+   4. start-dow
+   5. start-hour
+   6. start-minute
+   7. end-year
+   8. end-month
+   9. end-day
+  10. end-dow, end-hour, end-minute, total-hours, total-minutes
 4. The sexp be any other code that will be run at each heading containing a clock line. You can use =org-entry-get= or any other function to grab data from the heading and put it into the CSV. 
 5. The only rules for these sexps is that they must return a string, and that they must not move the point (i.e., you should save any excursion).
 6. The order of the data reflects the order it will be exported into the CSV
@@ -107,8 +117,8 @@ Consider the following file org file:
   02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
 A few notes:
-1. Note that for the line ="hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")=, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
-2. If a heading has more than one clock line (here, ="Checking if co-coworker did any work"=), then the CSV file will contain an entry for /each/ clock line.
+1. Note that for the =hourly rate= line, we ensure a string (and not nil) is returned. If a heading does not have an HOURLY-RATE property, =org-entry-get= will return nil. Hence the need to set a default of =325=.
+2. If a heading has more than one clock line (here, =Checking if co-coworker did any work=), then the CSV file will contain an entry for /each/ clock line.
 
 *** Restricting exported data
 What if you only want to export clock data for certain headings, or for a certain time? Then you use the variable =org-clock-export-org-ql-query=. This will require you to understand how to use =org-ql=. The variable must be a query acceptable to =org-ql-select=. For example, suppose you only wanted to export time entries from headings tagged with =:Abby:=. Then:

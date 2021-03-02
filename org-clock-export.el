@@ -269,7 +269,6 @@ With two prefixes, prompt for file."
       (`16 (write-region (point-min) (point-max) (read-file-name
 						  "File name to export CSV data:"))))))
 
-
 ;;;; Footer
 
 (provide 'org-clock-export)

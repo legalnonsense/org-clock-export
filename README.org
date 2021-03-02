@@ -147,6 +147,28 @@ date,hours,minutes,description,hourly rate
 03/01/2021,0,12,Sending an email to a non-responsive co-worker,125
 03/01/2021,0,13,Doing the co-coworker’s work for them,325
 #+end_example
+*** Final example
+This should all be pretty easy to follow. If not, here's a final arbitrary example:
+#+begin_src emacs-lisp :results silent
+  (setq org-clock-export-org-ql-query nil)
+  (setq org-clock-export-data '( "name" "Jack Jackson"
+                                 "date" (concat start-month "/" start-day "/" start-year)
+                                 "start time" (concat start-hour ":" start-minute)
+                                 "end time" (concat end-hour ":" end-minute)
+                                 "total time" (concat total-hours ":" total-minutes)
+                                 "description" (org-entry-get (point) "ITEM") ;; The headline text
+                                 "file name" (buffer-file-name)
+                                 "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")))
+#+end_src
+Results:
+#+begin_example
+name,date,start time,end time,total time,description,file name,hourly rate
+Jack Jackson,03/01/2021,16:40,16:50,0:10,Checking if co-coworker did any work,/home/x/.emacs.d/lisp/org-clock-export/test.org,250
+Jack Jackson,03/01/2021,15:45,15:50,0:05,Checking if co-coworker did any work,/home/x/.emacs.d/lisp/org-clock-export/test.org,250
+Jack Jackson,03/01/2021,16:05,16:17,0:12,Sending an email to a non-responsive co-worker,/home/x/.emacs.d/lisp/org-clock-export/test.org,125
+Jack Jackson,03/01/2021,16:17,16:30,0:13,Doing the co-coworker’s work for them,/home/x/.emacs.d/lisp/org-clock-export/test.org,325
+Jack Jackson,02/28/2021,16:19,17:19,1:00,Talking about mindless drivel with customer,/home/x/.emacs.d/lisp/org-clock-export/test.org,325
+#+end_example
 *** Other custom variables
 | Name                              | Description                                                                  | Default value                                    |
 |-----------------------------------+------------------------------------------------------------------------------+--------------------------------------------------|

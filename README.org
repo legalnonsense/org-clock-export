@@ -134,12 +134,23 @@ And now the output is:
 date,hours,minutes,description,hourly rate
 02/28/2021,1,00,Talking about mindless drivel with customer,325
 #+end_example
-You can use =org-clock-export-org-ql-query= to restrict to certain tags, dates, times, and otherwise harness the full power of =org-ql=. 
+You can use =org-clock-export-org-ql-query= to restrict to certain tags, dates, times, and otherwise harness the full power of =org-ql=. For example, if you only want to export entries for a given date with the tag "Gus", use:
+#+begin_src emacs-lisp :results silent
+(setq org-clock-export-org-ql-query '(and (clocked :on today) (tags "Gus")))
+#+end_src
+And you'll get:
+#+begin_example
+date,hours,minutes,description,hourly rate
+03/01/2021,0,10,Checking if co-coworker did any work,250
+03/01/2021,0,05,Checking if co-coworker did any work,250
+03/01/2021,0,12,Sending an email to a non-responsive co-worker,125
+03/01/2021,0,13,Doing the co-coworker’s work for them,325
+#+end_example
 *** Other custom variables
 | Name                              | Description                                                                  | Default value                                    |
 |-----------------------------------+------------------------------------------------------------------------------+--------------------------------------------------|
 | org-clock-export-buffer           | Buffer used to export CSV data.                                              | =*ORG-CLOCK-EXPORT CSV"=                         |
-| org-clock-export-export-file-name | File to export data to.                                                      | (concat user-emacs-directory "clock-export.csv") |
+| org-clock-export-export-file-name | File to export data to.                                                      | =(concat user-emacs-directory "clock-export.csv")= |
 | org-clock-export-delimiter        | Delimiter used in the CSV output.                                            | ","                                              |
 | org-clock-export-org-ql-query     | See above.                                                                   | nil                                              |
 | org-clock-export-files            | "If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |

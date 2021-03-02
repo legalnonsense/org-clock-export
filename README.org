@@ -66,20 +66,20 @@ The rules are:
 1. The first element is a string to describe the category of data;
 2. The following sexp is evaluated at each org heading containing a clock line
 3. Each sexp can use the following variables, which are bound to values based on each clock-line. The following should be self-explanatory:
-   1. start-year
-   2. start-month
-   3. start-day
-   4. start-dow [day of week]
-   5. start-hour
-   6. start-minute
-   7. end-year
-   8. end-month
-   9. end-day
-  10. end-dow
-  11. end-hour
-  12. end-minute
-  13. total-hours
-  14. total-minutes
+   - start-year
+   - start-month
+   - start-day
+   - start-dow [day of week]
+   - start-hour
+   - start-minute
+   - end-year
+   - end-month
+   - end-day
+  - end-dow
+  - end-hour
+  - end-minute
+  - total-hours
+  - total-minutes
 4. The sexp be any code that will be run at each heading containing a clock line. For example, you can use =org-entry-get= (or any other function) to grab data from the heading and put it into the CSV. 
 5. The only rules for these sexps are that they must return a string, and that they must not move the point (i.e., you should save any excursion).
 6. The order of the data reflects the order it will be exported into the CSV

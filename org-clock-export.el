@@ -75,6 +75,8 @@
   :group 'org-clock-export
   :prefix "org-clock-export-")
 
+;; I have no idea if I am using the :type keyword correctly!
+
 (defcustom org-clock-export-buffer "*ORG-CLOCK-EXPORT CSV*"
   "Buffer used to export CSV data."
   :type 'string)
@@ -133,7 +135,7 @@ string, and it must keep the point at the heading when finsihed (i.e., you shoul
  `save-excursion' if you move the point when looking for data.
 
 If there are multiple clock lines in a heading, this returns a line of CSV data for each one."
-  :type '(repeat (list symbol sexp)))
+  :type '(repeat (list string sexp)))
 
 ;;;; Constants
 

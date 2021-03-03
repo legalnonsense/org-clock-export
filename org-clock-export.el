@@ -246,9 +246,10 @@ With two prefixes, prompt for file."
   (interactive "p")
   (with-current-buffer (get-buffer-create org-clock-export-buffer)
     (erase-buffer)
-    (cl-flet ((clean-up ()
-			(delete-char (* -1 (length org-clock-export-delimiter)))
-			(insert "\n")))
+    (cl-flet ((clean-up
+	       ()
+	       (delete-char (* -1 (length org-clock-export-delimiter)))
+	       (insert "\n")))
       (cl-loop for
 	       x from 0 to (1- (length org-clock-export-data)) by 2
 	       do
@@ -266,9 +267,13 @@ With two prefixes, prompt for file."
 			finally
 			(clean-up)))
       (pcase prefix
-	(4 (write-region (point-min) (point-max) org-clock-export-export-file-name))
-	(16 (write-region (point-min) (point-max) (read-file-name
-						   "File name to export CSV data:")))))))
+	(4
+	 (write-region (point-min) (point-max)
+		       org-clock-export-export-file-name))
+	(16
+	 (write-region (point-min) (point-max)
+		       (read-file-name
+			"File name to export CSV data:")))))))
 
 ;;;; Footer
 

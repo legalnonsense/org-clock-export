@@ -41,10 +41,7 @@
 
 ;;;; Usage
 
-
-;;;; Tips
-
-
+;; See the README.
 
 ;;; License:
 

@@ -244,10 +244,10 @@ With two prefixes, prompt for file."
   (interactive "p")
   (with-current-buffer (get-buffer-create org-clock-export-buffer)
     (erase-buffer)
-    (cl-flet ((clean-up
-	       ()
-	       (delete-char (* -1 (length org-clock-export-delimiter)))
-	       (insert "\n")))
+    (cl-flet ((clean-up ()
+			(delete-char
+			 (* -1 (length org-clock-export-delimiter)))
+			(insert "\n")))
       (cl-loop for
 	       x from 0 to (1- (length org-clock-export-data)) by 2
 	       do

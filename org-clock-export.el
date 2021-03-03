@@ -137,56 +137,57 @@ If there are multiple clock lines in a heading, this returns a line of CSV data 
 
 ;;;; Constants
 
-(defconst org-clock-export--clock-re (rx (seq bol
-					      (zero-or-more (any "	 "))
-					      "CLOCK: ")
-					 (seq "["
-					      ;; start-year
-					      (group-n 1 (= 4 digit))
-					      "-"
-					      ;; start month
-					      (group-n 2 (= 2 digit))
-					      "-"
-					      ;; start day
-					      (group-n 3 (= 2 digit))
-					      (one-or-more not-newline)
-					      ;; start DOW
-					      (group-n 4 (= 3 alpha))
-					      (one-or-more not-newline)
-					      ;; start hour
-					      (group-n 5 (= 2 digit))
-					      ":"
-					      ;; start minute
-					      (group-n 6 (= 2 digit))
-					      "]")
-					 (seq "--")
-					 (seq "["
-					      ;; end-year
-					      (group-n 7 (= 4 digit))
-					      "-"
-					      ;; end month
-					      (group-n 8 (= 2 digit))
-					      "-"
-					      ;; end day
-					      (group-n 9 (= 2 digit))
-					      (one-or-more not-newline)
-					      ;; end DOW
-					      (group-n 10 (= 3 alpha))
-					      (one-or-more not-newline)
-					      ;; end hour
-					      (group-n 11 (= 2 digit))
-					      ":"
-					      ;; end minute
-					      (group-n 12 (= 2 digit))
-					      "]")
-					 (seq (one-or-more space)
-					      "=>"
-					      (one-or-more space))
-					 ;; total hours
-					 (seq (group-n 13 (one-or-more digit))
-					      ":"
-					      ;; total minutes
-					      (group-n 14 (one-or-more digit))))
+(defconst org-clock-export--clock-re
+  (rx (seq bol
+	   (zero-or-more (any "	 "))
+	   "CLOCK: ")
+      (seq "["
+	   ;; start-year
+	   (group-n 1 (= 4 digit))
+	   "-"
+	   ;; start month
+	   (group-n 2 (= 2 digit))
+	   "-"
+	   ;; start day
+	   (group-n 3 (= 2 digit))
+	   (one-or-more not-newline)
+	   ;; start DOW
+	   (group-n 4 (= 3 alpha))
+	   (one-or-more not-newline)
+	   ;; start hour
+	   (group-n 5 (= 2 digit))
+	   ":"
+	   ;; start minute
+	   (group-n 6 (= 2 digit))
+	   "]")
+      (seq "--")
+      (seq "["
+	   ;; end-year
+	   (group-n 7 (= 4 digit))
+	   "-"
+	   ;; end month
+	   (group-n 8 (= 2 digit))
+	   "-"
+	   ;; end day
+	   (group-n 9 (= 2 digit))
+	   (one-or-more not-newline)
+	   ;; end DOW
+	   (group-n 10 (= 3 alpha))
+	   (one-or-more not-newline)
+	   ;; end hour
+	   (group-n 11 (= 2 digit))
+	   ":"
+	   ;; end minute
+	   (group-n 12 (= 2 digit))
+	   "]")
+      (seq (one-or-more space)
+	   "=>"
+	   (one-or-more space))
+      ;; total hours
+      (seq (group-n 13 (one-or-more digit))
+	   ":"
+	   ;; total minutes
+	   (group-n 14 (one-or-more digit))))
   "Clock line RE.  The groups are explained in the comments.")
 
 ;;;; Functions

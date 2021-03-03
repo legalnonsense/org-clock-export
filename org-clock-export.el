@@ -246,28 +246,29 @@ With two prefixes, prompt for file."
   (interactive "p")
   (with-current-buffer (get-buffer-create org-clock-export-buffer)
     (erase-buffer)
-    (cl-loop for
-	     x from 0 to (1- (length org-clock-export-data)) by 2
-	     do
-	     (insert  (nth x org-clock-export-data)
-		      org-clock-export-delimiter)
-	     finally
-	     (progn (delete-char (* -1 (length org-clock-export-delimiter)))
-		    (insert "\n")))
-    (cl-loop for
-	     entry in (org-clock-export--run-org-ql)
-	     do
-	     (cl-loop for
-		      data in entry
-		      do
-		      (insert data org-clock-export-delimiter)
-		      finally
-		      (progn (delete-char (* -1 (length org-clock-export-delimiter)))
-			     (insert "\n"))))
-    (pcase prefix
-      (`4 (write-region (point-min) (point-max) org-clock-export-export-file-name))
-      (`16 (write-region (point-min) (point-max) (read-file-name
-						  "File name to export CSV data:"))))))
+    (cl-flet ((clean-up ()
+			(delete-char (* -1 (length org-clock-export-delimiter)))
+			(insert "\n")))
+      (cl-loop for
+	       x from 0 to (1- (length org-clock-export-data)) by 2
+	       do
+	       (insert  (nth x org-clock-export-data)
+			org-clock-export-delimiter)
+	       finally
+	       (clean-up))
+      (cl-loop for
+	       entry in (org-clock-export--run-org-ql)
+	       do
+	       (cl-loop for
+			data in entry
+			do
+			(insert data org-clock-export-delimiter)
+			finally
+			(clean-up)))
+      (pcase prefix
+	(`4 (write-region (point-min) (point-max) org-clock-export-export-file-name))
+	(`16 (write-region (point-min) (point-max) (read-file-name
+						    "File name to export CSV data:")))))))
 
 ;;;; Footer
 

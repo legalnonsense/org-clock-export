@@ -112,7 +112,7 @@ or list of files.  Default: nil."
      "minutes" total-minutes
      "description" (org-entry-get (point) "ITEM")
      "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))
-  "The following variables are let-bound when the functions are called, 
+  "The following variables are let-bound when the sexps are called, 
 based on the values in the clock line:
 start-year
 start-month

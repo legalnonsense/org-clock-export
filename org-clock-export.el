@@ -226,6 +226,8 @@ If there are multiple clock lines in a heading, this returns a line of CSV data 
 (defun org-clock-export--run-org-ql ()
   "Run org-ql to process all headings in `org-clock-export-files' and
 return a list with an element for each clock line."
+  ;; cl-loop is necessary to flatten the results, since each heading
+  ;; might have more than one clock line
   (cl-loop for each in
 	   (org-ql-select (or org-clock-export-files
 			      (org-agenda-files))

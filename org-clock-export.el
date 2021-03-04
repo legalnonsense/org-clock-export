@@ -220,10 +220,12 @@ If there are multiple clock lines in a heading, this returns a line of CSV data 
 			(end-minute (get-match 12))
 			(total-hours (get-match 13))
 			(total-minutes (get-match 14)))
-		    (list ,@(cl-loop for
-				     x from 1 to (1- (length (symbol-value arg))) by 2
-				     collect
-				     (nth x (symbol-value arg))))))))))
+		    (list
+		     ,@(cl-loop
+			for
+			x from 1 to (1- (length (symbol-value arg))) by 2
+			collect
+			(nth x (symbol-value arg))))))))))
 
 (defun org-clock-export--run-org-ql ()
   "Run org-ql to process all headings in `org-clock-export-files' and

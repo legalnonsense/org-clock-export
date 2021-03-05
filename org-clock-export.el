@@ -153,10 +153,10 @@ for each one."
 	   "-"
 	   ;; start day
 	   (group-n 3 (= 2 digit))
-	   (one-or-more not-newline)
+	   (one-or-more space)
 	   ;; start DOW
 	   (group-n 4 (= 3 alpha))
-	   (one-or-more not-newline)
+	   (one-or-more space)
 	   ;; start hour
 	   (group-n 5 (= 2 digit))
 	   ":"
@@ -173,10 +173,10 @@ for each one."
 	   "-"
 	   ;; end day
 	   (group-n 9 (= 2 digit))
-	   (one-or-more not-newline)
+	   (one-or-more space)
 	   ;; end DOW
 	   (group-n 10 (= 3 alpha))
-	   (one-or-more not-newline)
+	   (one-or-more space)
 	   ;; end hour
 	   (group-n 11 (= 2 digit))
 	   ":"

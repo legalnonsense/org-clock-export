@@ -128,13 +128,14 @@ end-minute
 total-hours
 total-minutes.
 
-Any other sexp is evaluated at the first point of each heading with a clock line.  
-Hence, you can use `org-entry-get' to retrieve property values, or any other 
-method to gather data from the heading.  The only rules are that it must return a 
-string, and it must keep the point at the heading when finsihed (i.e., you should
- `save-excursion' if you move the point when looking for data.
+Any other sexp is evaluated at the first point of each heading with a clock 
+line.  Hence, you can use `org-entry-get' to retrieve property values, or any
+other method to gather data from the heading.  The only rules are that it must
+return a string, and it must keep the point at the heading when finsihed (i.e.,
+you should `save-excursion' if you move the point when looking for data.
 
-If there are multiple clock lines in a heading, this returns a line of CSV data for each one."
+If there are multiple clock lines in a heading, this returns a line of CSV data
+for each one."
   :type '(repeat (list string sexp)))
 
 ;;;; Constants

@@ -1,8 +1,6 @@
 
 * org-clock-export.el
 Fully customizable export of org-clock data into a CSV file. 
-** IN PROGRESS
-This package is being developed. It appears to work. Please open issues for any feedback, requests, or ideas. 
 ** Usage
 *** Install dependencies:
 - org-ql :: https://github.com/alphapapa/org-ql
@@ -171,13 +169,13 @@ Jack Jackson,03/01/2021,16:17,16:30,0:13,"Doing the co-coworker’s work for the
 Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with customer",/home/jeff/.emacs.d/lisp/org-clock-export/test.org,325
 #+end_example
 *** Other custom variables
-| Name                              | Description                                                                  | Default value                                    |
-|-----------------------------------+------------------------------------------------------------------------------+--------------------------------------------------|
-| org-clock-export-buffer           | Buffer used to export CSV data                                               | =*ORG-CLOCK-EXPORT CSV*=                        |
-| org-clock-export-file-name | File to export data to                                                       | =(concat user-emacs-directory "clock-export.csv")= |
-| org-clock-export-delimiter        | Delimiter (a string) used in the CSV output                                  | ","                                              |
-| org-clock-export-org-ql-query     | See above                                                                    | nil                                              |
-| org-clock-export-files            | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files  | nil                                              |
-| org-clock-export-data             | See above                                                                    |                                                  |
+| Name                          | Description                                                                 | Default value                                    |
+|-------------------------------+-----------------------------------------------------------------------------+--------------------------------------------------|
+| org-clock-export-buffer       | Buffer used to export CSV data                                              | =*ORG-CLOCK-EXPORT CSV*=                           |
+| org-clock-export-file-name    | File to export data to                                                      | =(concat user-emacs-directory "clock-export.csv")= |
+| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 | ","                                              |
+| org-clock-export-org-ql-query | See above                                                                   | nil                                              |
+| org-clock-export-files        | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
+| org-clock-export-data         | See above                                                                   |                                                  |
 * Other efforts
 - org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed and so I wrote this. 

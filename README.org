@@ -162,5 +162,8 @@ Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with cus
 | org-clock-export-org-ql-query | See above                                                                   | nil                                              |
 | org-clock-export-files        | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
 | org-clock-export-data         | See above                                                                   |                                                  |
+* A note about escaping characters
+Since there is no standard for CSV files, you will need to ensure the strings returned by =org-clock-export-data= are appropriately escaped. (I plan to add convenience functions for escaping characters.)
+
 * Other efforts
 - org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed and so I wrote this. 

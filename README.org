@@ -158,7 +158,7 @@ Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with cus
 |-------------------------------+-----------------------------------------------------------------------------+--------------------------------------------------|
 | org-clock-export-buffer       | Buffer used to export CSV data                                              | =*ORG-CLOCK-EXPORT CSV*=                           |
 | org-clock-export-file-name    | File to export data to                                                      | =(concat user-emacs-directory "clock-export.csv")= |
-| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 | ","                                              |
+| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 | =,=                                                |
 | org-clock-export-org-ql-query | See above                                                                   | nil                                              |
 | org-clock-export-files        | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
 | org-clock-export-data         | See above                                                                   |                                                  |

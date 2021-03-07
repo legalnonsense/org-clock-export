@@ -143,6 +143,7 @@ This should all be pretty easy to follow. If not, here's a final arbitrary examp
                                  "description" (concat "\"" (org-entry-get (point) "ITEM") "\"")
                                  "file name" (buffer-file-name)
                                  "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325")))
+(org-clock-export)
 #+end_src
 Results:
 #+begin_example

@@ -11,7 +11,7 @@ Clone this repository into your load path.
 #+end_src
 Then:
 #+begin_src emacs-lisp :results silent 
-  (use-package 'org-clock-export)
+  (use-package org-clock-export)
   ;; or
   (require 'org-clock-export)
 #+end_src

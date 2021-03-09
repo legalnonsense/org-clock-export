@@ -31,7 +31,9 @@ Or, use this use-package declaration with all custom variables set to the defaul
                                    "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
 #+end_src
 *** Usage 
-=org-clock-export-data= does the heavy lifting. It is in the style of a plist:
+=org-clock-export-data= does the heavy lifting. You must set this variable yourself. The default value, shown here, is an example.
+
+It is in the style of a plist:
 #+begin_src emacs-lisp :results silent
   (setq org-clock-export-data '( "date" (concat start-month "/" start-day "/" start-year)
                                  "hours" total-hours
@@ -42,7 +44,7 @@ Or, use this use-package declaration with all custom variables set to the defaul
 
 The rules are:
 
-1. The first element is a string to describe the category of data;
+1. The first element is a string to describe the category of data
 2. The following sexp is evaluated at each org heading containing a clock line
 3. Each sexp can use the following variables, which are bound to values based on each clock-line. The following should be self-explanatory:
   - start-year
@@ -159,7 +161,7 @@ Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with cus
 |-------------------------------+-----------------------------------------------------------------------------+--------------------------------------------------|
 | org-clock-export-buffer       | Buffer used to export CSV data                                              | =*ORG-CLOCK-EXPORT CSV*=                           |
 | org-clock-export-file-name    | File to export data to                                                      | =(concat user-emacs-directory "clock-export.csv")= |
-| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 |,                                                   |
+| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 | ,                                                |
 | org-clock-export-org-ql-query | See above                                                                   | nil                                              |
 | org-clock-export-files        | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
 | org-clock-export-data         | See above                                                                   |                                                  |

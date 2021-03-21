@@ -145,52 +145,39 @@ for each one."
 	   (zero-or-more (any "	 "))
 	   "CLOCK: ")
       (seq "["
-	   ;; start-year
-	   (group-n 1 (= 4 digit))
+	   (group-n 1 (= 4 digit)) ;; start year
 	   "-"
-	   ;; start month
-	   (group-n 2 (= 2 digit))
+	   (group-n 2 (= 2 digit)) ;; start month
 	   "-"
-	   ;; start day
-	   (group-n 3 (= 2 digit))
+	   (group-n 3 (= 2 digit)) ;; start day
 	   (one-or-more space)
-	   ;; start DOW
-	   (group-n 4 (= 3 alpha))
+	   (group-n 4 (= 3 alpha)) ;; start DOW
 	   (one-or-more space)
-	   ;; start hour
-	   (group-n 5 (= 2 digit))
+	   (group-n 5 (= 2 digit)) ;; start hour
 	   ":"
-	   ;; start minute
-	   (group-n 6 (= 2 digit))
+	   (group-n 6 (= 2 digit)) ;; start minute
 	   "]")
-      (seq "--")
+      "--"
       (seq "["
-	   ;; end-year
-	   (group-n 7 (= 4 digit))
+	   (group-n 7 (= 4 digit)) ;; end year
 	   "-"
-	   ;; end month
-	   (group-n 8 (= 2 digit))
+	   (group-n 8 (= 2 digit)) ;; end month
 	   "-"
-	   ;; end day
-	   (group-n 9 (= 2 digit))
+	   (group-n 9 (= 2 digit)) ;; end day
 	   (one-or-more space)
-	   ;; end DOW
-	   (group-n 10 (= 3 alpha))
+	   (group-n 10 (= 3 alpha)) ;; end DOW
 	   (one-or-more space)
-	   ;; end hour
-	   (group-n 11 (= 2 digit))
+	   (group-n 11 (= 2 digit)) ;; end hour
 	   ":"
-	   ;; end minute
-	   (group-n 12 (= 2 digit))
+	   (group-n 12 (= 2 digit)) ;; end minute
 	   "]")
       (seq (one-or-more space)
 	   "=>"
 	   (one-or-more space))
-      ;; total hours
-      (seq (group-n 13 (one-or-more digit))
-	   ":"
-	   ;; total minutes
-	   (group-n 14 (one-or-more digit))))
+      (seq (group-n 15 ;; total time (hh:mm format)
+		    (group-n 13 (one-or-more digit)) ;; total hours
+		    ":"
+		    (group-n 14 (one-or-more digit))))) ;; total minutes
   "Clock line RE.  The groups are explained in the comments.")
 
 ;;;; Functions
@@ -220,81 +207,62 @@ for each one."
 			(end-hour (get-match 11))
 			(end-minute (get-match 12))
 			(total-hours (get-match 13))
-			(total-minutes (get-match 14)))
+			(total-minutes (get-match 14))
+			(total-time (get-match 15)))
 		    (list
 		     ,@(cl-loop
 			for
-			x from 1 to (1- (length (symbol-value arg))) by 2
+			x from 1 to (1- (length arg)) by 2
 			collect
-			(nth x (symbol-value arg))))))))))
+			(nth x arg)))))))))
 
-(defun org-clock-export--run-org-ql ()
+(defun org-clock-export--run-org-ql (&optional query files export-data)
   "Run org-ql to process all headings in `org-clock-export-files' and
 return a list with an element for each clock line."
   ;; cl-loop is necessary to flatten the results, since each heading
   ;; might have more than one clock line
   (cl-loop for each in
-	   (org-ql-select (or org-clock-export-files
+	   (org-ql-select (or files
+			      org-clock-export-files
 			      (org-agenda-files))
 	     `(and (clocked)
-		   ,org-clock-export-org-ql-query)
-	     :action '(org-clock-export--parse-clock-lines-in-heading
-		       org-clock-export-data-format))
-	   append each))
+		   ,query)
+	     :action `(org-clock-export--parse-clock-lines-in-heading
+		       ,export-data))
+	   append each))         
 
 ;;;; Commands
 
-(defun org-clock-export (&optional prefix)
-  "With no prefix, export to buffer.
-With one prefix, export to file.
-With two prefixes, prompt for file."
-  (interactive "p")
-  (with-current-buffer (get-buffer-create org-clock-export-buffer)
+(cl-defun org-clock-export (&key (org-files org-clock-export-files)
+				 (org-ql-query org-clock-export-org-ql-query)
+				 (csv-data-format org-clock-export-data-format)
+				 (output-file org-clock-export-files)
+				 (delimiter org-clock-export-delimiter)				    
+				 (output-buffer org-clock-export-buffer))
+  (with-current-buffer (get-buffer-create output-buffer)
     (erase-buffer)
     (cl-flet ((clean-up ()
-			(delete-char
-			 (* -1 (length org-clock-export-delimiter)))
+			(delete-char (* -1 (length delimiter)))
 			(insert "\n")))
       (cl-loop for
-	       x from 0 to (1- (length org-clock-export-data-format)) by 2
+	       x from 0 to (1- (length csv-data-format)) by 2
 	       do
-	       (insert  (nth x org-clock-export-data-format)
-			org-clock-export-delimiter)
+	       (insert  (nth x csv-data-format)
+			delimiter)
 	       finally
 	       (clean-up))
       (cl-loop for
-	       entry in (org-clock-export--run-org-ql)
+	       entry in (org-clock-export--run-org-ql org-ql-query org-files csv-data-format)
 	       do
 	       (cl-loop for
 			data in entry
 			do
-			(insert data org-clock-export-delimiter)
+			(insert data delimiter)
 			finally
-			(clean-up)))
-      (pcase prefix
-	(4
-	 (write-region (point-min) (point-max)
-		       org-clock-export-export-file-name))
-	(16
-	 (write-region (point-min) (point-max)
-		       (read-file-name
-			"File name to export CSV data:")))))))
-
-
-(org-clock-export-1
- :csv-data '( "date" (concat start-month "/" start-day "/" start-year)
-	      "hours" total-hours
-	      "minutes" total-minutes
-	      "description" (org-entry-get (point) "ITEM")
-	      "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))
- :output-file "~/Desktop/test.csv"
- :org-ql-query 
- (cl-defun org-clock-export-1 (&keys org-ql-query
-				    (csv-data org-clock-export-data-format
-				    output-file
-				    (output-buffer org-clock-export-buffer))
-
-  (
+			(clean-up))))
+    (when output-file
+      (write-region (point-min) (point-max)
+		    output-file))))
 
 ;;;; Footer
 

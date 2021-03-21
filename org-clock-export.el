@@ -105,7 +105,7 @@ need to include '(clocked), however you can add additional limitations, e.g.,
 or list of files.  Default: nil."
   :type '(choice file list string))
 
-(defcustom org-clock-export-data
+(defcustom org-clock-export-data-format
   '( "date" (concat start-month "/" start-day "/" start-year)
      "hours" total-hours
      "minutes" total-minutes
@@ -196,7 +196,7 @@ for each one."
 ;;;; Functions
 
 (defmacro org-clock-export--parse-clock-lines-in-heading (arg)
-  "Return data based on `org-clock-export-data'.  Used by 
+  "Return data based on `org-clock-export-data-format'.  Used by 
 `org-clock-export--run-org-ql' as the `org-ql-select' action."
   `(save-excursion
      (cl-flet ((get-limit () (or (save-excursion
@@ -239,7 +239,7 @@ return a list with an element for each clock line."
 	     `(and (clocked)
 		   ,org-clock-export-org-ql-query)
 	     :action '(org-clock-export--parse-clock-lines-in-heading
-		       org-clock-export-data))
+		       org-clock-export-data-format))
 	   append each))
 
 ;;;; Commands
@@ -256,9 +256,9 @@ With two prefixes, prompt for file."
 			 (* -1 (length org-clock-export-delimiter)))
 			(insert "\n")))
       (cl-loop for
-	       x from 0 to (1- (length org-clock-export-data)) by 2
+	       x from 0 to (1- (length org-clock-export-data-format)) by 2
 	       do
-	       (insert  (nth x org-clock-export-data)
+	       (insert  (nth x org-clock-export-data-format)
 			org-clock-export-delimiter)
 	       finally
 	       (clean-up))
@@ -279,6 +279,22 @@ With two prefixes, prompt for file."
 	 (write-region (point-min) (point-max)
 		       (read-file-name
 			"File name to export CSV data:")))))))
+
+
+(org-clock-export-1
+ :csv-data '( "date" (concat start-month "/" start-day "/" start-year)
+	      "hours" total-hours
+	      "minutes" total-minutes
+	      "description" (org-entry-get (point) "ITEM")
+	      "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))
+ :output-file "~/Desktop/test.csv"
+ :org-ql-query 
+ (cl-defun org-clock-export-1 (&keys org-ql-query
+				    (csv-data org-clock-export-data-format
+				    output-file
+				    (output-buffer org-clock-export-buffer))
+
+  (
 
 ;;;; Footer
 

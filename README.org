@@ -184,7 +184,8 @@ If you omit any of the keywords, the default value is used. If you set any of th
    :csv-data-format '("matter" (org-entry-get (point) "SOME-PROPERTY" t)
                       ;; I need the date in MM/DD/YYYY format 
                       "date" (concat start-month "/" start-day "/" start-year)
-                      ;; Here, I want to remove anything in brackets from the headline text 
+                      ;; Here, I want to remove anything in brackets from the headline text
+                      ;; And I need the headline enclosed in quotes in case there is a comma in the text
                       "activity_description" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "note" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "price" "425"

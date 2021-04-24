@@ -196,7 +196,6 @@ If you omit any of the keywords, the default value is used. If you set any of th
    :delimiter ",")
 #+end_src
 * A note about escaping characters
-Since there is no standard for CSV files, you will need to ensure the strings returned by =org-clock-export-data= are appropriately escaped. (I plan to add convenience functions for escaping characters.)
-
+Since there is no standard for CSV files, you will need to ensure the strings returned by =org-clock-export-data= are appropriately escaped.
 * Other efforts
-- org-clock-csv :: https://github.com/atheriel/org-clock-csv. Seems like a fine package, but it did not allow me to export my time data in the way I needed and so I wrote this. 
+- org-clock-csv :: https://github.com/atheriel/org-clock-csv. This did not allow me to export my time data in the way I needed and so I wrote this. 

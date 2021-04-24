@@ -178,12 +178,17 @@ If you omit any of the keywords, the default value is used. If you set any of th
 
 #+begin_src emacs-lisp :results silent
   (org-clock-export
+
+   ;; Only export anything with a category of "Jones"
    :org-ql-query '(category "Jones")
    :csv-data-format '("matter" (org-entry-get (point) "SOME-PROPERTY" t)
+                      ;; I need the date in MM/DD/YYYY format 
                       "date" (concat start-month "/" start-day "/" start-year)
+                      ;; Here, I want to remove anything in brackets from the headline text 
                       "activity_description" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "note" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "price" "425"
+                      ;; I need the quantity to the number of hours in decimal form
                       "quantity" (concat total-hours "." (substring (cadr (split-string (format "%f" (/ (string-to-number total-minutes) 60.0)) "\\.")) 0 2))
                       "type" "TimeEntry")
    :output-file "~/path/to/file.csv"

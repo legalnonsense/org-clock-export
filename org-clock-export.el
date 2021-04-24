@@ -126,7 +126,8 @@ end-dow
 end-hour
 end-minute
 total-hours
-total-minutes.
+total-minutes
+total-time
 
 Any other sexp is evaluated at the first point of each heading with a clock 
 line.  Hence, you can use `org-entry-get' to retrieve property values, or any

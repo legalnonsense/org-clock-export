@@ -237,7 +237,7 @@ return a list with an element for each clock line."
 (cl-defun org-clock-export (&key (org-files org-clock-export-files)
 				 (org-ql-query org-clock-export-org-ql-query)
 				 (csv-data-format org-clock-export-data-format)
-				 (output-file org-clock-export-files)
+				 (output-file org-clock-export-file-name)
 				 (delimiter org-clock-export-delimiter)				    
 				 (output-buffer org-clock-export-buffer))
   (with-current-buffer (get-buffer-create output-buffer)

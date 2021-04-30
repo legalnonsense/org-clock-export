@@ -24,11 +24,11 @@ Or, use this use-package declaration with all custom variables set to the defaul
           org-clock-export-file-name (concat user-emacs-directory "clock-export.csv")
           org-clock-export-buffer "*ORG-CLOCK-EXPORT CSV*"
           org-clock-export-delimiter ","
-          org-clock-export-data '( "date" (concat start-month "/" start-day "/" start-year)
-                                   "hours" total-hours
-                                   "minutes" total-minutes
-                                   "description" (org-entry-get (point) "ITEM")
-                                   "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
+          org-clock-export-data-format '("date" (concat start-month "/" start-day "/" start-year)
+                                         "hours" total-hours
+                                         "minutes" total-minutes
+                                         "description" (org-entry-get (point) "ITEM")
+                                         "hourly rate" (or (org-entry-get (point) "HOURLY-RATE") "325"))))
 #+end_src
 *** Usage
 =org-clock-export-data= does the heavy lifting. You must set this variable yourself. The default value, shown here, is an example.

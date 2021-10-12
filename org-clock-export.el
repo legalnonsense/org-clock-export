@@ -232,6 +232,12 @@ return a list with an element for each clock line."
 		       ,export-data))
 	   append each))         
 
+(defun org-clock-export--csv-quote (entry delimiter)
+  "Escape entries to be CSV-safe, by quoting the field if it contains a delimiter, newline or double-quote."
+  (if (string-match-p (rx (or "\"" "\n" (literal delimiter))) entry)
+      (concat "\"" (string-replace "\"" "\"\"" entry) "\"")
+    entry))
+
 ;;;; Commands
 
 (cl-defun org-clock-export (&key (org-files org-clock-export-files)
@@ -248,7 +254,7 @@ return a list with an element for each clock line."
       (cl-loop for
 	       x from 0 to (1- (length csv-data-format)) by 2
 	       do
-	       (insert  (nth x csv-data-format)
+	       (insert  (org-clock-export--csv-quote (nth x csv-data-format) delimiter)
 			delimiter)
 	       finally
 	       (clean-up))
@@ -258,7 +264,7 @@ return a list with an element for each clock line."
 	       (cl-loop for
 			data in entry
 			do
-			(insert data delimiter)
+			(insert (org-clock-export--csv-quote data delimiter) delimiter)
 			finally
 			(clean-up))))
     (when output-file

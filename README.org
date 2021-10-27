@@ -21,7 +21,7 @@ Or, use this use-package declaration with all custom variables set to the defaul
     :config
     (setq org-clock-export-org-ql-query nil
           org-clock-export-files nil
-          org-clock-export-file-name (concat user-emacs-directory "clock-export.csv")
+          org-clock-export-export-file-name (concat user-emacs-directory "clock-export.csv")
           org-clock-export-buffer "*ORG-CLOCK-EXPORT CSV*"
           org-clock-export-delimiter ","
           org-clock-export-data-format '("date" (concat start-month "/" start-day "/" start-year)
@@ -66,7 +66,7 @@ The rules are:
 6. The only rules for these sexps are that they must return a string, and that they must not move the point (i.e., you should save any excursion).
 7. The order of the data in =org-clock-export-data= reflects the order it will appear in the CSV
 
-If you call =org-clock-export= with a prefix (i.e., press =C-u= before calling the command), the csv file will be saved to the location specified by =org-clock-export-file-name=.
+If you call =org-clock-export= with a prefix (i.e., press =C-u= before calling the command), the csv file will be saved to the location specified by =org-clock-export-export-file-name=.
 
 If you call it with two prefixes, you will be prompted to select the export file.
 
@@ -157,14 +157,14 @@ Jack Jackson,03/01/2021,16:17,16:30,0:13,"Doing the co-coworker’s work for the
 Jack Jackson,02/28/2021,16:19,17:19,1:00,"Talking about mindless drivel with customer",/home/jeff/.emacs.d/lisp/org-clock-export/test.org,325
 #+end_example
 *** Other custom variables
-| Name                          | Description                                                                 | Default value                                    |
-|-------------------------------+-----------------------------------------------------------------------------+--------------------------------------------------|
-| org-clock-export-buffer       | Buffer used to export CSV data                                              | =*ORG-CLOCK-EXPORT CSV*=                           |
-| org-clock-export-file-name    | File to export data to                                                      | =(concat user-emacs-directory "clock-export.csv")= |
-| org-clock-export-delimiter    | Delimiter (a string) used in the CSV output                                 | ,                                                |
-| org-clock-export-org-ql-query | See above                                                                   | nil                                              |
-| org-clock-export-files        | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
-| org-clock-export-data         | See above                                                                   |                                                  |
+| Name                              | Description                                                                 | Default value                                    |
+|-----------------------------------+-----------------------------------------------------------------------------+--------------------------------------------------|
+| org-clock-export-buffer           | Buffer used to export CSV data                                              | =*ORG-CLOCK-EXPORT CSV*=                           |
+| org-clock-export-export-file-name | File to export data to                                                      | =(concat user-emacs-directory "clock-export.csv")= |
+| org-clock-export-delimiter        | Delimiter (a string) used in the CSV output                                 | ,                                                |
+| org-clock-export-org-ql-query     | See above                                                                   | nil                                              |
+| org-clock-export-files            | If nil, use `org-agenda-files'.  Otherwise, specify a file or list of files | nil                                              |
+| org-clock-export-data             | See above                                                                   |                                                  |
 *** Overriding default values
 You can override any of the default values by using keywords in the call to =org-clock-export=. The keywords are:
 | org-files       |
@@ -180,16 +180,12 @@ If you omit any of the keywords, the default value is used. If you set any of th
   (org-clock-export
 
    ;; Only export anything with a category of "Jones"
-   :org-ql-query '(category "Jones")
+   :org-ql-query nil
    :csv-data-format '("matter" (org-entry-get (point) "SOME-PROPERTY" t)
-                      ;; I need the date in MM/DD/YYYY format 
                       "date" (concat start-month "/" start-day "/" start-year)
-                      ;; Here, I want to remove anything in brackets from the headline text
-                      ;; And I need the headline enclosed in quotes in case there is a comma in the text
                       "activity_description" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "note" (concat "\"" (s-trim (replace-regexp-in-string "\\[.+\\]" "" (org-entry-get (point) "ITEM"))) "\"")
                       "price" "425"
-                      ;; I need the quantity to the number of hours in decimal form
                       "quantity" (concat total-hours "." (substring (cadr (split-string (format "%f" (/ (string-to-number total-minutes) 60.0)) "\\.")) 0 2))
                       "type" "TimeEntry")
    :output-file "~/path/to/file.csv"
